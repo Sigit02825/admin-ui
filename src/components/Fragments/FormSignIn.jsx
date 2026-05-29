@@ -2,6 +2,7 @@ import React from 'react'
 import LabeledInput from "../Elements/LabeledInput";
 import CheckBox from "../Elements/CheckBox";
 import Button from "../Elements/Button";
+import { Link } from "react-router-dom";
 function FormSignIn() {
   return (
     <>
@@ -10,7 +11,7 @@ function FormSignIn() {
           <form action="">
             <div className="mb-6">
                 <LabeledInput
-                    label="Email Addres"
+                    label="Email Address"
                     id="email"
                     type="email"
                     placeholder="hello@example.com"
@@ -53,6 +54,12 @@ function FormSignIn() {
   </span>
 </Button>
         </div>
+        {/* sign in with google end */}
+        {/* sign up link start */}
+        <div className="text-center text-xs text-gray-03">
+            Don't have an account? <Link to="/register" className="text-primary cursor-pointer font-bold">Create an account</Link>
+        </div>
+        {/* sign up link end */}
     </>
   );
 }
