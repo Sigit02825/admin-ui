@@ -2,18 +2,15 @@ import "./App.css";
 import SignInPage from "./pages/signIn";
 import SignUpPage from "./pages/signUp";
 import ErrorPage from "./pages/error";
-import { createBrowserRouter, RouterProvider, Link } from "react-router-dom";
+import DashboardPage from "./pages/dashboard";
+import BalancePage from "./pages/balance";
+import { createBrowserRouter, Link, RouterProvider } from "react-router-dom";
 
 function App() {
   const myRouter = createBrowserRouter([
-    {
+   {
       path: "/",
-      element: (
-        <div className="flex justify-center items-center min-h-screen flex-col gap-y-4">
-          <Link to="/login" className="bg-primary text-white p-2 rounded-md">Login</Link>
-          <Link to="/register" className="bg-primary text-white p-2 rounded-md">Register</Link>
-        </div>
-      ),
+      element: <DashboardPage />,
       errorElement: <ErrorPage />,
     },
     {
@@ -23,6 +20,10 @@ function App() {
     {
       path: "/register",
       element: <SignUpPage />,
+    },
+    {
+      path: "/balance",
+      element: <BalancePage />,
     },
   ]);
 

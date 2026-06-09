@@ -1,32 +1,20 @@
-import React from "react";
 import PostCard from "./PostCard";
-import postsData from "../postsData";
+import postsData from "../data/postsData";
 
 function Exercise() {
   return (
-    <div className="min-h-screen bg-gray-50 p-8">
-      <header className="mb-12 text-center">
-        <h1 className="text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-red-600 to-red-700 mb-2">
+    <>
+      <div className="min-h-screen bg-gray-06 p-10 pl-20 pr-20">
+        <h1 className="text-3xl font-bold text-center mb-10 text-special-red2">
           Post Cards
         </h1>
-      </header>
-
-      <main className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
-        {postsData.map((post) => (
-          <PostCard 
-            key={post.id} 
-            id={post.id} 
-            userId={post.userId} 
-            title={post.title} 
-            body={post.body} 
-          />
-        ))}
-      </main>
-
-      <footer className="mt-16 text-center text-gray-400 text-sm pb-8">
-        &copy; 2026 - Pemrograman Sisi Klien - A11.4602
-      </footer>
-    </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4 w-full mx-auto px-4">
+          {postsData.map((post) => (
+            <PostCard key={post.id} {...post} />
+          ))}
+        </div>
+      </div>    
+    </>
   );
 }
 

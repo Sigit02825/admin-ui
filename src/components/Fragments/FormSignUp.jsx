@@ -1,79 +1,81 @@
 import React from 'react'
-import LabeledInput from "../Elements/LabeledInput";
-import Button from "../Elements/Button";
-import CheckBox from "../Elements/CheckBox";
+import LabeledInput from '../Elements/LabeledInput'
+import Checkbox from '../Elements/CheckBox'
+import Button from '../Elements/Button'
 import { Link } from "react-router-dom";
 
 function FormSignUp() {
-  return (
-    <>
-        {/* form start */}
-        <div className="mt-16">
-          <form action="">
-            <div className="mb-6">
-                <LabeledInput
-                    label="Name"
-                    id="name"
-                    type="text"
-                    placeholder="Tanzir Rahman"
-                    name="name"
-                />
-            </div>
-            <div className="mb-6">
-                <LabeledInput
-                    label="Email Address"
-                    id="email"
-                    type="email"
-                    placeholder="hello@example.com"
-                    name="email"
-                />
-            </div>
-            <div className="mb-6">
-                <LabeledInput
-                    label="Password"
-                    id="password"
-                    type="password"
-                    placeholder="●●●●●●●●●●●●●●●●●"
-                    name="password"
-                />
-            </div>
-            
-            <div className="mb-6">
-                <CheckBox
-                    label="By continuing, you agree to our terms of service."
-                    id="status"
-                    type="checkbox"
-                    name="status"
-                />
-            </div>
 
-            <Button>Sign up</Button>
-          </form>
+  return (
+    <div>
+        <div className="mt-5 mb-2 text-center">
+            <h2 className="text-1xl font-bold text-gray-01">Create an Account</h2>
         </div>
-        {/* form end */}
-        {/* teks start */}
-        <div className="my-9 px-7 flex flex-col justify-center items-center text-xs text-gray-03">
-          <div className="border border-gray-05 w-full"></div>
-          <div className="px-2 bg-special-mainBg absolute"> or sign up with</div>
-        </div>
-        {/* teks end */}
-        {/* sign in with google start */}
-        <div className="mb-8">
-            <Button type="button" variant="secondary">
-                <span className="flex items-center justify-center">
-                    <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google" className="w-4 h-4 mr-2" />
-                    Continue with Google
-                </span>
-            </Button>
-        </div>
-        {/* sign in with google end */}
-        {/* sign in link start */}
-        <div className="text-center text-xs text-gray-03">
-            Already have an account? <Link to="/login" className="text-primary cursor-pointer font-bold">Sign in here</Link>
-        </div>
-        {/* sign in link end */}
-    </>
-  );
+      {/* form start */}
+      <div className="mt-16">
+        <form action="">
+          <div className="mb-6">
+            <LabeledInput
+              label="Full Name"
+              id="fullname"
+              type="text"
+              placeholder="John Doe"
+              name="fullname"
+            />
+          </div>
+          <div className="mb-6">
+            <LabeledInput
+              label="Email address"
+              id="email"
+              type="email"
+              placeholder="hello@example.com"
+              name="email"
+            />
+          </div>
+          <div className="mb-6">
+            <LabeledInput
+              label="Password"
+              id="password"
+              type="password"
+              placeholder="••••••••"
+              name="password"
+            />
+          </div>
+          <div className="mb-6">
+            <LabeledInput
+              label="Confirm Password"
+              id="confirmPassword"
+              type="password"
+              placeholder="••••••••"
+              name="confirmPassword"
+            />
+          </div>
+          <div className="mb-5 flex items-center gap-2">
+            <Checkbox id="terms" type="checkbox" name="terms" />
+            <label htmlFor="terms" className="text-sm text-gray-01">
+                I agree to the{" "}
+                <span className="text-primary font-bold">Terms and Conditions</span>
+            </label>
+          </div>
+          <Button variant="primary">
+            Create Account
+          </Button>
+        </form>
+      </div>
+      {/* form end */}
+
+      {/* link start */}
+      <div className="flex justify-center mt-6">
+        <p className="text-gray-03 text-sm">
+            Already have an account?{" "}
+        <Link to="/login" className="text-primary text-sm font-bold cursor-pointer">
+           Sign In
+        </Link>
+        </p>
+      </div>
+      {/* link end */}
+    </div>
+  )
 }
 
-export default FormSignUp;
+export default FormSignUp
