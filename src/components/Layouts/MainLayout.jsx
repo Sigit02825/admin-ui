@@ -1,10 +1,14 @@
 import React, {useContext,useState} from "react";
+import Backdrop from "@mui/material/Backdrop";
+import CircularProgress from "@mui/material/CircularProgress";
 import Logo from "../Elements/Logo";
 import Input from "../Elements/Input";
 import NotificationsActiveIcon from '@mui/icons-material/NotificationsActive';
 import Icon from "../Elements/Icon";
+import ModeToggle from "../Elements/ModeToggle";
 import { NavLink } from "react-router-dom";
 import { ThemeContext } from "../../context/themeContext";
+import { ColorModeContext } from "../../context/colorModeContext";
 import { AuthContext } from "../../context/authContext";
 import { logoutService } from "../../services/authService";
 
@@ -20,20 +24,28 @@ function MainLayout(props) {
 ];
 
 const {theme, setTheme} = useContext(ThemeContext);
+const { isDarkMode } = useContext(ColorModeContext);
 
   const menu = [
     { id: 1, name: "Overview", icon: <Icon.Overview />, link: "/" },
     { id: 2, name: "Balances", icon: <Icon.Balance />, link: "/balance" },
     { id: 3, name: "Transaction", icon: <Icon.Transaction />, link: "/transaction", },
     { id: 4, name: "Bills", icon: <Icon.Bill />, link: "/bill" },
-    { id: 5, name: "Expenses", icon: <Icon.Expense />, link: "/expense" },
+    { id: 5, name: "Expenses", icon: <Icon.Expense />, link: "/expenses" },
     { id: 6, name: "Goals", icon: <Icon.Goal />, link: "/goal" },
     { id: 7, name: "Settings", icon: <Icon.Setting />, link: "/setting" },
   ];
 
 const { user, logout } = useContext(AuthContext);
+const [isLoggingOut, setIsLoggingOut] = useState(false);
 
 	  const handleLogout = async () => {
+    if (isLoggingOut) {
+      return;
+    }
+
+    setIsLoggingOut(true);
+
     try {
       await logoutService();
       logout(); 
@@ -42,17 +54,23 @@ const { user, logout } = useContext(AuthContext);
       if (err.status === 401) {
         logout();
       }
+    } finally {
+      setIsLoggingOut(false);
     }
   };
 
 console.log(user);
   
+  const searchBackground = isDarkMode ? "bg-[#1F2937]" : "bg-white";
+  const searchBorder = isDarkMode ? "border-gray-600" : "border-white";
+
   return (
     <>
-	    <div className={`flex min-h-screen ${theme.name}`}>
+	    <div className={`flex min-h-screen transition-colors ${theme.name}`}>
 			  <aside 
-          className="bg-defaultBlack w-28 sm:w-64 text-special-bg2
-          flex flex-col justify-between px-7 py-12"
+          className={`w-28 sm:w-64
+          flex flex-col justify-between px-7 py-12
+          ${isDarkMode ? "bg-[#030712] text-gray-200" : "bg-defaultBlack text-special-bg2"}`}
           >
       		<div>
             <div className="mb-10">
@@ -77,7 +95,7 @@ console.log(user);
               ))}
             </nav>
           </div>
-        	<div>
+        	<div className={isDarkMode ? "text-gray-300" : ""}>
             Themes
             <div className="flex flex-col sm:flex-row gap-2 items-center">
               {themes.map((t) => (
@@ -90,7 +108,10 @@ console.log(user);
             </div>
           </div>
           <div>
-            <div onClick={handleLogout} className="cursor-pointer">
+            <div
+              onClick={handleLogout}
+              className={`cursor-pointer ${isLoggingOut ? "pointer-events-none opacity-70" : ""}`}
+            >
             	<div className="flex bg-special-bg3 text-white px-4 py-3 rounded-md">
                 <div className="mx-auto sm:mx-0 text-primary">
                   <Icon.Logout />
@@ -98,7 +119,7 @@ console.log(user);
                 <div className="ms-3 hidden sm:block">Logout</div>
               </div>
               </div>
-            <div className="border my-10 border-b-special-bg"></div>
+            <div className={`border my-10 ${isDarkMode ? "border-gray-700" : "border-b-special-bg"}`}></div>
             	<div className="flex justify-between items-center">
               <div>Avatar</div>
               <div className="hidden sm:block">
@@ -111,24 +132,43 @@ console.log(user);
             </div>
           </div>
         </aside>
-			<div className="bg-special-mainBg flex-1 flex flex-col">
-        <header className="border border-b border-gray-05 px-6 py-7 flex justify-between items-center">
+			<div className={`flex-1 flex flex-col transition-colors ${
+          isDarkMode ? "bg-[#111827] text-gray-100" : "bg-special-mainBg text-gray-900"
+        }`}>
+        <header className={`border border-b px-6 py-7 flex justify-between items-center transition-colors ${
+          isDarkMode ? "border-gray-700 bg-[#0F172A]" : "border-gray-05 bg-transparent"
+        }`}>
           <div className="flex items-center">
             <div className="font-bold text-2xl me-6">{user.name}</div> 
-            <div className="text-gray-03 flex">
+            <div className={`${isDarkMode ? "text-gray-400" : "text-gray-03"} flex`}>
               <Icon.ChevronRight size={20} />
               <span>May 19, 2023</span>
             </div> 
           </div>
           <div className="flex items-center">
+            <div className="me-4">
+              <ModeToggle />
+            </div>
             <div className="me-10">
               <NotificationsActiveIcon className="text-primary scale-110" />
             </div>
-            <Input backgroundColor="bg-white" border="border-white" />
+            <Input backgroundColor={searchBackground} border={searchBorder} />
           </div>
         </header>
         <main className="flex-1 px-6 py-4">{children}</main>    
     </div>
+      <Backdrop
+        open={isLoggingOut}
+        sx={(theme) => ({
+          color: "#fff",
+          zIndex: theme.zIndex.drawer + 1,
+          flexDirection: "column",
+          gap: 1.5,
+        })}
+      >
+        <CircularProgress color="inherit" />
+        <span className="text-sm">Logging Out</span>
+      </Backdrop>
     </div>
     </>
   );

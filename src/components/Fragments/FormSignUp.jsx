@@ -1,10 +1,11 @@
-import React from 'react'
 import LabeledInput from '../Elements/LabeledInput'
 import Checkbox from '../Elements/CheckBox'
 import Button from '../Elements/Button'
 import { Link } from "react-router-dom";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
+import { useContext } from "react";
+import { ColorModeContext } from "../../context/colorModeContext";
 
 const SignUpSchema = Yup.object().shape({
   fullname: Yup.string().required("Nama lengkap wajib diisi"),
@@ -16,11 +17,15 @@ const SignUpSchema = Yup.object().shape({
   terms: Yup.bool().oneOf([true], "Anda harus menyetujui Terms and Conditions"),
 });
 
-function FormSignUp() {
+function FormSignUp({ onSubmit }) {
+  const { isDarkMode } = useContext(ColorModeContext);
+
   return (
     <div>
       <div className="mt-5 mb-2 text-center">
-        <h2 className="text-1xl font-bold text-gray-01">Create an Account</h2>
+        <h2 className={`text-1xl font-bold ${isDarkMode ? "text-gray-100" : "text-gray-01"}`}>
+          Create an Account
+        </h2>
       </div>
       {/* form start */}
       <div className="mt-16">
@@ -33,9 +38,12 @@ function FormSignUp() {
             terms: false,
           }}
           validationSchema={SignUpSchema}
-          onSubmit={(values, { setSubmitting }) => {
-            setSubmitting(false);
-            console.log("Register values:", values);
+          onSubmit={async (values, { setSubmitting }) => {
+            try {
+              await onSubmit(values);
+            } finally {
+              setSubmitting(false);
+            }
           }}
         >
           {({ isSubmitting }) => (
@@ -146,7 +154,7 @@ function FormSignUp() {
 
       {/* link start */}
       <div className="flex justify-center mt-6">
-        <p className="text-gray-03 text-sm">
+        <p className={`text-sm ${isDarkMode ? "text-gray-400" : "text-gray-03"}`}>
           Already have an account?{" "}
           <Link to="/login" className="text-primary text-sm font-bold cursor-pointer">
             Sign In

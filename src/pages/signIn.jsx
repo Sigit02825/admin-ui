@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import AuthLayout from '../components/Layouts/AuthLayout'
 import FormSignIn from '../components/Fragments/FormSignIn'
+import ModeToggle from '../components/Elements/ModeToggle';
 import { loginService } from '../services/authService';
 import {AuthContext} from '../context/authContext';
 import AppSnackbar from '../components/Elements/AppSnackbar';
@@ -31,6 +32,9 @@ function SignIn() {
   return (
     <AuthLayout>
       <FormSignIn onSubmit ={handleLogin} />
+      <div className="mt-6 flex justify-center">
+        <ModeToggle />
+      </div>
 
       				<AppSnackbar
           open={snackbar.open}

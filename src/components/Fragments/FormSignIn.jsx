@@ -5,6 +5,7 @@ import Button from "../Elements/Button";
 import { Link } from "react-router-dom";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
+import { ColorModeContext } from "../../context/colorModeContext";
 
 const SignInSchema = Yup.object().shape({
   email: Yup.string().email("Email tidak valid").required("Email wajib diisi"),
@@ -12,6 +13,8 @@ const SignInSchema = Yup.object().shape({
 });
 
 function FormSignIn({ onSubmit }) {
+  const { isDarkMode } = React.useContext(ColorModeContext);
+
   return (
     <div>
       {/* form start */}
@@ -96,11 +99,15 @@ function FormSignIn({ onSubmit }) {
       {/* form end */}
 
       {/* teks start */}
-      <div className="my-9 px-7 flex flex-col justify-center items-center text-xs text-gray-03">
+      <div
+        className={`my-9 px-7 flex flex-col justify-center items-center text-xs ${
+          isDarkMode ? "text-gray-400" : "text-gray-03"
+        }`}
+      >
         <div className="border border-gray-05 w-full"></div>
 
         {/* ganti class → className */}
-        <div className="px-2 bg-special-mainBg absolute">
+        <div className={`px-2 absolute ${isDarkMode ? "bg-[#111827]" : "bg-special-mainBg"}`}>
           or sign in with
         </div>
       </div>
@@ -141,13 +148,21 @@ function FormSignIn({ onSubmit }) {
       {/* google end */}
 
       {/* link start */}
-      <div className="flex justify-center">
+      <div className="flex flex-col items-center gap-2">
         <Link
           to="/register"
           className="text-primary text-sm font-bold cursor-pointer"
         >
           Create an account
         </Link>
+        <button
+          type="button"
+          className={`text-sm font-bold cursor-pointer ${
+            isDarkMode ? "text-gray-200" : "text-gray-02"
+          }`}
+        >
+          Forgot Password
+        </button>
       </div>
       {/* link end */}
     </div>
